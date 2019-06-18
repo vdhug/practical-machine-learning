@@ -1,3 +1,4 @@
 sklearn
 quandl
 pandas
+numpy
