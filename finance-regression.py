@@ -1,6 +1,7 @@
 # Example Regression
 import pandas as pd
 import quandl
+import math
 
 df = quandl.get('WIKI/GOOGL')
 
@@ -19,4 +20,14 @@ df['PCT_change'] = (df['Adj. Close'] - df['Adj. Open']) / df['Adj. Open'] * 100
 # Defining the features that we will care about and will be used for our classifier. 
 df = df[['Adj. Close', 'HL_PCT', 'PCT_change', 'Adj. Volume']]
 
+# Define the forecast collumn 
+forecast_col = 'Adj. Close'
+df.fillna(-99999, inplace=True)
+
+# We are trying to predict the next 10% of prices
+forecast_out = int(math.ceil(0.01 * len(df)))
+
+# Create the label collumn 
+df['label'] = df[forecast_col].shift(-forecast_out)
+df.dropna(inplace=True)
 print(df.head())
