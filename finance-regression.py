@@ -7,6 +7,7 @@ from sklearn.linear_model import LinearRegression
 import matplotlib.pyplot as plt
 from matplotlib import style
 
+style.use('ggplot')
 df = quandl.get('WIKI/GOOGL')
 
 # Selecting the features to be used by the regression classifier
@@ -44,7 +45,6 @@ X_lately = X[-forecast_out:]
 
 
 df.dropna(inplace=True)
-y = np.array(df['label'])
 # Labels
 y = np.array(df['label'])
 
@@ -69,6 +69,7 @@ next_unix = last_unix + one_day
 for i in forecast_set:
     next_date = datetime.datetime.fromtimestamp(next_unix)
     next_unix += one_day
+    # Explanation about df.loc[next_date], the dates are the index of the data. So when we say this we are reference the data of this date. if any doubt we can print the df.head and see. For the precited values you can print df.tail()
     df.loc[next_date] = [np.nan for _ in range(len(df.columns)-1)] + [i]
 
 
