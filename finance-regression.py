@@ -10,7 +10,7 @@ from matplotlib import style
 style.use('ggplot')
 df = quandl.get('WIKI/GOOGL')
 
-# Selecting the features to be used by the regression classifier
+# Selecting the features to be used by the regression classifier (not the best features)
 # Volume refers to how many trades occured that day, related to volatility
 df = df[['Adj. Open', 'Adj. High', 'Adj. Low', 'Adj. Close', 'Adj. Volume']]
 
@@ -30,7 +30,7 @@ forecast_col = 'Adj. Close'
 df.fillna(-99999, inplace=True)
 
 # We are trying to predict the next 10% of prices
-forecast_out = int(math.ceil(0.01 * len(df)))
+forecast_out = int(math.ceil(0.1 * len(df)))
 
 # Create the label collumn 
 df['label'] = df[forecast_col].shift(-forecast_out)
@@ -38,10 +38,10 @@ df['label'] = df[forecast_col].shift(-forecast_out)
 # Features
 X = np.array(df.drop(['label'], 1))
 X = preprocessing.scale(X)
-# Slice array from 0 until forecast_out
-X = X[:-forecast_out]
-# Slice array from forecast_out until the end, this is the data that we are going to use to predict
+# Slice array from forecast_out until the end, this will get the last 10% of numbers in the array, is the data that we are going to use to predict
 X_lately = X[-forecast_out:]
+# Slice array from 0 until forecast_out, more simple, the 90% of the array used to train the model
+X = X[:-forecast_out]
 
 
 df.dropna(inplace=True)
