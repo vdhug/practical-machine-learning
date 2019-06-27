@@ -85,6 +85,12 @@ class Support_Vector_Machine:
             self.w = opt_choice[0]
             self.b = opt_choice[1]
             latest_optimum = opt_choice[0][0]+step*2
+            
+        # Print values of distance from support vectors
+        for i in self.data:
+            for xi in self.data[i]:
+                yi=i
+                print(xi,':',yi*(np.dot(self.w,xi)+self.b))     
 
 
     def predict(self,features):
@@ -128,6 +134,7 @@ class Support_Vector_Machine:
 
         plt.show()
 
+
 data_dict = {-1:np.array([[1,7],
                           [2,8],
                           [3,8],]),
@@ -138,4 +145,16 @@ data_dict = {-1:np.array([[1,7],
 
 svm = Support_Vector_Machine()
 svm.fit(data=data_dict)
+
+predict_us = [[0,10],
+              [1,3],
+              [3,4],
+              [3,5],
+              [5,5],
+              [5,6],
+              [6,-5],
+              [5,8]]
+
+for p in predict_us:
+    svm.predict(p)
 svm.visualize()
