@@ -3,3 +3,4 @@ quandl
 pandas
 numpy
 matplotlib
+cvxopt
