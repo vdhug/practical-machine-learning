@@ -50,6 +50,13 @@ def create_lexicon(pos,neg):
 # Function to model the data, cast raw data into a feature set
 def sample_handling(sample,lexicon,classification):
 
+	# The featureset will be like: 
+	# [
+	# 	[0, 0, 0, 2],
+	# 	[1, 1, 1, 0],
+	# 	[0, 0, 2, 3],
+	# 	[1, 0, 0, 0],
+	# ]
 	featureset = []
 
 	with open(sample,'r') as f:
@@ -69,9 +76,45 @@ def sample_handling(sample,lexicon,classification):
 				if word.lower() in lexicon:
 					# Find the index of the word in the lexicon
 					index_value = lexicon.index(word.lower())
+					# Increase frequency of that feature
 					features[index_value] += 1
-
+			# Convert numpy array to list
 			features = list(features)
+			# Appending list into the list that represents the featureset.
 			featureset.append([features,classification])
 
 	return featureset
+
+
+def create_feature_sets_and_labels(pos,neg,test_size = 0.1):
+	# Creating lexicon with words of positive and negative datasets
+	lexicon = create_lexicon(pos,neg)
+	featureset = []
+	# Converting raw data into features, and storing inside of featureset
+	featureset += sample_handling('pos.txt',lexicon,[1,0])
+	featureset += sample_handling('neg.txt',lexicon,[0,1])
+	random.shuffle(featureset)
+	# Converting featureset into a numpy arrat
+	featureset = np.array(featureset)
+
+	# Defining the testing size
+	testing_size = int(test_size*len(featureset))
+	# Slicing the featureset into train and test
+	# The notation featureset[:, 0] means that we want all the elements of position 0, e.g. featureset is an matrix of features and labels, so featureset is [ [features], [labels] ] =====>
+	# 		[ [ [1, 1, 0], [1, 0] ],
+	# 		  [ [0, 0, 1], [0, 1] ],
+	# 		]
+	# 
+	train_x = list(featureset[:,0][:-testing_size])
+	train_y = list(featureset[:,1][:-testing_size])
+	test_x = list(featureset[:,0][-testing_size:])
+	test_y = list(featureset[:,1][-testing_size:])
+
+	return train_x,train_y,test_x,test_y
+
+
+if __name__ == '__main__':
+	train_x,train_y,test_x,test_y = create_feature_sets_and_labels('pos.txt','neg.txt')
+	# if you want to pickle this data:
+	with open('sentiment_set.pickle','wb') as f:
+		pickle.dump([train_x,train_y,test_x,test_y],f)
