@@ -5,11 +5,11 @@ import tensorflow as tf
 x1 = tf.constant(5)
 x2 = tf.constant(6)
 
-result = tf.mul(x1,x2)
+result = tf.multiply(x1,x2)
 print(result)
 
 # defines our session and launches graph
-sess = tf.Session()
+sess = tf.compat.v1.Session()
 # runs result
 print(sess.run(result))
 
