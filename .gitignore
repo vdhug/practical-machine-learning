@@ -3,3 +3,6 @@ __pycache__/
 *.txt
 *.pickle
 *.xls
+*.zip
+*.csv
+*.ckpt
