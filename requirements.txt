@@ -6,3 +6,5 @@ matplotlib
 cvxopt
 xlrd
 nltk
+tflearn
+gym
