@@ -8,3 +8,5 @@ xlrd
 nltk
 tflearn
 gym
+opencv-python
+tqdm

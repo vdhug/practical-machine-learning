@@ -1,4 +1,6 @@
 __pycache__/
+train/
+test/
 log/
 *.data
 *.txt
@@ -9,3 +11,8 @@ log/
 *.ckpt
 *.gz
 *.npy
+*.jpg
+*.index
+*.meta
+*.model.*
+checkpoint
